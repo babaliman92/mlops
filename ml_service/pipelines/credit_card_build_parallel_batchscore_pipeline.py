@@ -124,7 +124,7 @@ def get_input_dataset(ws: Workspace, ds: Datastore, env: Env) -> Dataset:
 def get_fallback_input_dataset(ws: Workspace, env: Env) -> Dataset:
     """
     Called when an input datastore does not exist or no input data file exists
-    at that location. Create a sample dataset using the diabetes dataset from
+    at that location. Create a sample dataset using the credit_card dataset from
     scikit-learn. Useful when debugging this code in the absence of the input
     data location Azure blob.
 

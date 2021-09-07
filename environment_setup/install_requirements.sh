@@ -26,6 +26,6 @@
 
 set -eux
 
-conda env create -f diabetes_regression/ci_dependencies.yml
+conda env create -f credit_card/ci_dependencies.yml
 
 conda activate mlopspython_ci

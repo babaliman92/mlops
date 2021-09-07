@@ -65,7 +65,7 @@ def main():
         create_sample_data_csv()
 
         # Use a CSV to read in the data set.
-        file_name = "diabetes.csv"
+        file_name = "credit_card.csv"
 
         if not os.path.exists(file_name):
             raise Exception(
@@ -91,7 +91,7 @@ def main():
         dataset = dataset.register(
             workspace=aml_workspace,
             name=dataset_name,
-            description="diabetes training data",
+            description="credit_card training data",
             tags={"format": "CSV"},
             create_new_version=True,
         )
