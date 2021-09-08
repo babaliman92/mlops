@@ -102,7 +102,8 @@ def main():
         "pipeline_data", datastore=aml_workspace.get_default_datastore()
     )
     
-    prepped_data = Dataset.get_by_name(ws, dataset_name)
+    # AutoML step
+    prepped_data = Dataset.get_by_name(aml_workspace, dataset_name)
 
     automl_settings = {
         "n_cross_validations": 3,
