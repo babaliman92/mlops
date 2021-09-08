@@ -99,7 +99,7 @@ if (args.run_id is not None):
 if (run_id == 'amlcompute'):
     run_id = run.parent.id
 model_name = args.model_name
-metric_eval = "mse"
+metric_eval = "average_precision_score_weighted"
 
 allow_run_cancel = args.allow_run_cancel
 # Parameterize the matrices on which the models should be compared
@@ -115,24 +115,24 @@ try:
                 aml_workspace=ws)
 
     if (model is not None):
-        production_model_mse = 10000
+        production_model_average_precision_score_weighted = 10000
         if (metric_eval in model.tags):
-            production_model_mse = float(model.tags[metric_eval])
-        new_model_mse = float(run.parent.get_metrics().get(metric_eval))
-        if (production_model_mse is None or new_model_mse is None):
+            production_model_average_precision_score_weighted = float(model.tags[metric_eval])
+        new_model_average_precision_score_weighted = float(run.parent.get_metrics().get(metric_eval))
+        if (production_model_average_precision_score_weighted is None or new_model_average_precision_score_weighted is None):
             print("Unable to find", metric_eval, "metrics, "
                   "exiting evaluation")
             if((allow_run_cancel).lower() == 'true'):
                 run.parent.cancel()
         else:
             print(
-                "Current Production model mse: {}, "
-                "New trained model mse: {}".format(
-                    production_model_mse, new_model_mse
+                "Current Production model average_precision_score_weighted: {}, "
+                "New trained model average_precision_score_weighted: {}".format(
+                    production_model_average_precision_score_weighted, new_model_average_precision_score_weighted
                 )
             )
 
-        if (new_model_mse < production_model_mse):
+        if (new_model_average_precision_score_weighted > production_model_average_precision_score_weighted):
             print("New trained model performs better, "
                   "thus it should be registered")
         else:
