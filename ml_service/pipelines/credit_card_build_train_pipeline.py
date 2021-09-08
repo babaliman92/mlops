@@ -150,8 +150,8 @@ def main():
         script_name=e.register_script_path,
         compute_target=aml_compute,
         source_directory=e.sources_directory_train,
-        inputs=[pipeline_data],
-        arguments=["--model_name", model_name_param, "--step_input", pipeline_data, ],  # NOQA: E501
+        inputs=[prepped_data],
+        arguments=["--model_name", model_name_param, "--step_input", prepped_data, ],  # NOQA: E501
         runconfig=run_config,
         allow_reuse=False,
     )
