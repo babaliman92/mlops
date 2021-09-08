@@ -114,6 +114,9 @@ def main():
         "n_cross_validations": 3,
         "primary_metric": 'average_precision_score_weighted',
         "enable_early_stopping": True,
+        "iteration_timeout_minutes" : 10,
+        "iterations" : 5,
+        "experiment_timeout_hours" : 0.25
     
     }
 
