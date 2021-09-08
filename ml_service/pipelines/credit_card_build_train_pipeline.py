@@ -1,7 +1,7 @@
 from azureml.pipeline.core.graph import PipelineParameter
 from azureml.pipeline.steps import PythonScriptStep, AutoMLStep
 from azureml.train.automl import AutoMLConfig
-from azureml.pipeline.core import Pipeline, PipelineData
+from azureml.pipeline.core import Pipeline, PipelineData, TrainingOutput
 from azureml.core import Workspace, Dataset, Datastore
 from azureml.core.runconfig import RunConfiguration
 from ml_service.pipelines.load_sample_data import create_sample_data_csv
