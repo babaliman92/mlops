@@ -1,5 +1,6 @@
 from azureml.pipeline.core.graph import PipelineParameter
-from azureml.pipeline.steps import PythonScriptStep
+from azureml.pipeline.steps import PythonScriptStep, AutoMLStep
+from azureml.train.automl import AutoMLConfig
 from azureml.pipeline.core import Pipeline, PipelineData
 from azureml.core import Workspace, Dataset, Datastore
 from azureml.core.runconfig import RunConfiguration
@@ -100,30 +101,31 @@ def main():
     pipeline_data = PipelineData(
         "pipeline_data", datastore=aml_workspace.get_default_datastore()
     )
+    
+    prepped_data = Dataset.get_by_name(ws, dataset_name)
 
-    train_step = PythonScriptStep(
-        name="Train Model",
-        script_name=e.train_script_path,
-        compute_target=aml_compute,
-        source_directory=e.sources_directory_train,
-        outputs=[pipeline_data],
-        arguments=[
-            "--model_name",
-            model_name_param,
-            "--step_output",
-            pipeline_data,
-            "--dataset_version",
-            dataset_version_param,
-            "--data_file_path",
-            data_file_path_param,
-            "--caller_run_id",
-            caller_run_id_param,
-            "--dataset_name",
-            dataset_name,
-        ],
-        runconfig=run_config,
-        allow_reuse=True,
-    )
+    automl_settings = {
+        "n_cross_validations": 3,
+        "primary_metric": 'average_precision_score_weighted',
+        "enable_early_stopping": True,
+    
+    }
+
+    automl_config = AutoMLConfig(task = 'classification',
+                                 debug_log = 'automl_errors.log',
+                                 compute_target = aml_compute,
+                                 training_data = prepped_data,
+                                 label_column_name = 'Class',
+                                 **automl_settings
+                                )
+    
+    train_step = AutoMLStep(name='AutoML_Classification',
+        automl_config=automl_config,
+        passthru_automl_config=False,
+        enable_default_model_output=False,
+        enable_default_metrics_output=False,
+        allow_reuse=True)
+
     print("Step Train created")
 
     evaluate_step = PythonScriptStep(
