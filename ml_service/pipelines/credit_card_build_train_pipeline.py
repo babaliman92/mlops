@@ -106,7 +106,7 @@ def main():
     prepped_data = Dataset.get_by_name(aml_workspace, dataset_name)
 
     model_data = PipelineData(name='best_model_data',
-                          datastore=datastore,
+                          datastore=aml_workspace.get_default_datastore(),
                           pipeline_output_name='model_output',
                           training_output=TrainingOutput(type='Model'))
     
@@ -156,8 +156,8 @@ def main():
         script_name=e.register_script_path,
         compute_target=aml_compute,
         source_directory=e.sources_directory_train,
-        inputs=[pipeline_data],
-        arguments=["--model_name", model_name_param, "--step_input", pipeline_data, ],  # NOQA: E501
+        inputs=[model_data],
+        arguments=["--model_name", model_name_param, "--step_input", model_data, ],  # NOQA: E501
         runconfig=run_config,
         allow_reuse=False,
     )
