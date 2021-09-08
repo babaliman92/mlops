@@ -9,7 +9,7 @@
     },
     "registration":
     {
-        "tags": ["mse"]
+        "tags": ["average_precision_score_weighted"]
     },
     "scoring":
     {
